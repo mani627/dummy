@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 
 
 // Routes
-app.use("/Create conflict from local", require('./Controller/Create'))
+app.use("/Create conflict from remotess", require('./Controller/Create'))
 app.use("/admin/sec", require('./Controller/second'))
 
 
