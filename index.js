@@ -10,7 +10,7 @@ const FacebookStrategy= require('passport-facebook').Strategy;
 const Testingmodel = require('./Model/testing_module');
 
 
-console.log("second");
+console.log("third");
 
 
 
