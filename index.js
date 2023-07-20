@@ -5,6 +5,15 @@ const { log } = require('console');
 const app = express();
 var timeout = require('connect-timeout')
 const PORT = 3000;
+const passport=require('passport');
+const FacebookStrategy= require('passport-facebook').Strategy;
+const Testingmodel = require('./Model/testing_module');
+
+
+console.log("first");
+
+
+
 
 // /middleware
 mongoose.connect('mongodb://localhost:27017/checkx').then(()=>{
@@ -17,19 +26,19 @@ mongoose.connect('mongodb://localhost:27017/checkx').then(()=>{
 app.use(express.json());
 
 // Middleware to set the request timeout
-app.use((req, res, next) => {
-  // Set the desired timeout duration in milliseconds
-  const timeoutDuration = 5000; // 5 seconds
+// app.use((req, res, next) => {
+//   // Set the desired timeout duration in milliseconds
+//   const timeoutDuration = 5000; // 5 seconds
 
-  // Set a timeout for the request
-  req.setTimeout(timeoutDuration, () => {
-    const error = new Error('Request timeout');
-    error.status = 408; // Request Timeout HTTP status code
-    next(error);
-  });
+//   // Set a timeout for the request
+//   req.setTimeout(timeoutDuration, () => {
+//     const error = new Error('Request timeout');
+//     error.status = 408; // Request Timeout HTTP status code
+//     next(error);
+//   });
 
-  next();
-});
+//   next();
+// });
 
 
 // app.use((req,res,next)=>{
@@ -42,17 +51,52 @@ app.use((req, res, next) => {
 
 
 
+ 
+app.set('views', __dirname);
+ 
+app.get('/getting', (req, res) => {
+  res.redirect('/user');;
+})
+ 
+
+
+//Oauth
+passport.use(new FacebookStrategy({
+  clientID: '1476668956428466',
+  clientSecret: 'd3310d93ad382e5b5fe78d4dc4a5c42a',
+  callbackURL: "http://localhost:3000/auth/facebook/callback"
+},
+function(accessToken, refreshToken, profile, cb) {
+  return done(null, profile);
+}
+));
 
 
 // Routes
-app.use("/Create conflict from remotess", require('./Controller/Create'))
+app.use("/Create", require('./Controller/Create'))
 app.use("/admin/sec", require('./Controller/second'))
 
 
 
 
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/error' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.send('sucess');
+  });
+
+
 
 // simulate delay response
+
+
+app.use("*",(req,res)=>{
+res.send("402 not found")
+})
 
 
 // Error handler

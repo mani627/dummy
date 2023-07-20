@@ -21,7 +21,9 @@ const userschema= new mongoose.Schema({
     ],
     name: String,
     restaurant_id: String,
-    image:Buffer
+    image:Buffer,
+    new_field2:Number
+  
   })
 
 
@@ -29,6 +31,6 @@ const userschema= new mongoose.Schema({
 //    console.log(this)
 //   }
 
-    const Multiplemodel= mongoose.model("Demo",userschema);
+    const Multiplemodel= mongoose.model("demos",userschema);
 
     module.exports=Multiplemodel
